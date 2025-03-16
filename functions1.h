@@ -10,10 +10,10 @@
 
 int check();
 typedef struct BytesOfInt {
-    unsigned char byte1;
-    unsigned char byte2;
-    unsigned char byte3;
-    unsigned char byte4;
+    unsigned char byte1 : 8;
+    unsigned char byte2 : 8;
+    unsigned char byte3 : 8;
+    unsigned char byte4 : 8;
 } BytesOfInt;
 
 typedef struct Number {
