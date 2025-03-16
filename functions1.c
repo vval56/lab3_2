@@ -1,8 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <ctype.h>
-#include <errno.h>
-#include <limits.h>
+#include "functions1.h"
 
 int check(){
     char * input = (char*)calloc(11, sizeof(char));
@@ -19,7 +15,7 @@ int check(){
         number = strtol(input, &endptr, 10);
 
         if (endptr == input) {
-            puts("Ошибка: введите целое число: ");
+            puts(" ");
         } else if (*endptr != '\n' && *endptr != '\0') {
             puts("Ошибка: введены недопустимые символы: ");
         } else if (errno == ERANGE || number < INT_MIN || number > INT_MAX) {
@@ -32,18 +28,6 @@ int check(){
     free(input);
     return (int)number;
 }
-
-typedef struct BytesOfInt{
-    unsigned char byte1;
-    unsigned char byte2;
-    unsigned char byte3;
-    unsigned char byte4;
-} BytesOfInt;
-
-typedef struct Number{
-    int number;
-    struct BytesOfInt bytes;
-} Number;
 
 void task1(){
     int choice;
@@ -68,4 +52,3 @@ void task1(){
         free(input_number);
     } while(choice == 1);
 }
-
