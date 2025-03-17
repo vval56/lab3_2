@@ -24,6 +24,6 @@ void input_excursion(Excursion *tour);
 void print_excursion(const Excursion *tour);
 void delete_excursion(Excursion **tours, int *count, const char *name);
 void find_excursion(const Excursion *tours, int count, const char *name);
-void task2(Excursion **tours, int *count);
+void structure_task(Excursion **tours, int *count);
 
 #endif

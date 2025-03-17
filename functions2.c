@@ -157,7 +157,7 @@ void find_excursion(const Excursion *tours, int count, const char *name) {
     printf("Тур с названием \"%s\" не найден.\n", name);
 }
 
-void task2(Excursion **tours, int *count) {
+void structure_task(Excursion **tours, int *count) {
     int choice;
 
     do {

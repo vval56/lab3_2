@@ -21,6 +21,6 @@ typedef struct Number {
     struct BytesOfInt bytes;
 } Number;
 
-void task1();
+void byte_fields();
 
 #endif

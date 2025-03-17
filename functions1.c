@@ -29,7 +29,7 @@ int check(){
     return (int)number;
 }
 
-void task1(){
+void byte_fields(){
     int choice;
     do{
         puts("задание 1.\nВведите число");

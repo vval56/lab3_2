@@ -17,8 +17,8 @@ int main(){
     Excursion * tours = NULL;
     int count = 0;
 
-    task1();
-    task2(&tours, &count);
+    byte_fields();
+    structure_task(&tours, &count);
 
     free(tours);
 }
