@@ -147,14 +147,32 @@ void delete_excursion(Excursion **tours, int *count, const char *name) {
 }
 
 void find_excursion(const Excursion *tours, int count, const char *name) {
-    for (int i = 0; i < count; i++) {
-        if (strcmp(tours[i].name, name) == 0) {
-            printf("Тур найден:\n");
-            print_excursion(&tours[i]);
-            return;
-        }
+    if (count == 0) {
+        puts("Нет доступных туров.");
+        return;
     }
-    printf("Тур с названием \"%s\" не найден.\n", name);
+
+    puts("\nСписок доступных туров:");
+    for (int i = 0; i < count; i++) {
+        printf("%d. %s\n", i+1, tours[i].name);
+    }
+
+    puts("\nВведите номер тура для просмотра подробной информации (или 0 для отмены): ");
+    int choice;
+    do {
+        choice = check();
+        if (choice < 0 || choice > count) {
+            printf("Неверный номер. Введите число от 1 до %d (или 0 для отмены): ", count);
+        }
+    } while (choice < 0 || choice > count);
+
+    if (choice == 0) {
+        printf("Отмена поиска.\n");
+        return;
+    }
+
+    puts("\nПодробная информация о туре:");
+    print_excursion(&tours[choice-1]);
 }
 
 void structure_task(Excursion **tours, int *count) {
