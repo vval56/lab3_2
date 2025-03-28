@@ -1,5 +1,5 @@
-#include "functions1.h"
-#include "functions2.h"
+#include "byte_fields.h"
+#include "structure.h"
 
 //задание
 // 1. Для целого числа (int) вывести содержимое каждого байта (в десятичной

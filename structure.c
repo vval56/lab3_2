@@ -1,5 +1,5 @@
-#include "functions2.h"
-#include "functions1.h"
+#include "structure.h"
+#include "byte_fields.h"
 
 double check_double() {
     char input[100];
@@ -131,48 +131,65 @@ void print_excursion(const Excursion *tour) {
 }
 
 void delete_excursion(Excursion **tours, int *count, const char *name) {
-    for (int i = 0; i < *count; i++) {
+    int deleted = 0;
+    int new_count = *count;
+
+    for (int i = 0; i < new_count; i++) {
         if (strcmp((*tours)[i].name, name) == 0) {
-            free((*tours)[i].name);
-            for (int j = i; j < *count - 1; j++) {
-                (*tours)[j] = (*tours)[j + 1];
-            }
-            (*count)--;
-            *tours = (Excursion *)realloc(*tours, (*count) * sizeof(Excursion));
-            printf("Тур \"%s\" удален.\n", name);
-            return;
+            deleted++;
         }
     }
-    printf("Тур с названием \"%s\" не найден.\n", name);
+
+    if (deleted == 0) {
+        printf("Туры с названием \"%s\" не найдены.\n", name);
+        return;
+    }
+
+    Excursion *temp = (Excursion *)malloc((*count - deleted) * sizeof(Excursion));
+    if (temp == NULL) {
+        puts("Ошибка выделения памяти.");
+        return;
+    }
+
+    int temp_index = 0;
+    for (int i = 0; i < *count; i++) {
+        if (strcmp((*tours)[i].name, name) != 0) {
+            temp[temp_index++] = (*tours)[i];
+        } else {
+            free((*tours)[i].name);
+        }
+    }
+
+    free(*tours);
+
+    *tours = temp;
+    *count = new_count - deleted;
+
+    printf("Удалено %d туров с названием \"%s\".\n", deleted, name);
 }
 
-void find_excursion(const Excursion *tours, int count, const char *name) {
+void find_excursion(const Excursion *tours, int count) {
     if (count == 0) {
         puts("Нет доступных туров.");
         return;
     }
 
-    puts("\nСписок доступных туров:");
+    puts("Введите максимальную стоимость для поиска: ");
+    double max_price = check_double();
+
+    int found = 0;
+
     for (int i = 0; i < count; i++) {
-        printf("%d. %s\n", i+1, tours[i].name);
-    }
-
-    puts("\nВведите номер тура для просмотра подробной информации (или 0 для отмены): ");
-    int choice;
-    do {
-        choice = check();
-        if (choice < 0 || choice > count) {
-            printf("Неверный номер. Введите число от 1 до %d (или 0 для отмены): ", count);
+        if (tours[i].cost < max_price) {
+            printf("\nТур #%d:\n", i + 1);
+            print_excursion(&tours[i]);
+            found = 1;
         }
-    } while (choice < 0 || choice > count);
-
-    if (choice == 0) {
-        printf("Отмена поиска.\n");
-        return;
     }
 
-    puts("\nПодробная информация о туре:");
-    print_excursion(&tours[choice-1]);
+    if (!found) {
+        printf("Туров дешевле %.2f не найдено.\n", max_price);
+    }
 }
 
 void structure_task(Excursion **tours, int *count) {
@@ -182,7 +199,7 @@ void structure_task(Excursion **tours, int *count) {
         puts("1 - добавить экскурсию.");
         puts("2 - вывести все туры.");
         puts("3 - удалить тур по названию");
-        puts("4 - найти тур по названию");
+        puts("4 - найти тур по цене");
         puts("0 - выход");
 
         choice = check();
@@ -217,9 +234,7 @@ void structure_task(Excursion **tours, int *count) {
             }
             case 4: {
                 char name[100];
-                printf("Введите название тура для поиска: ");
-                scanf("%s", name);
-                find_excursion(*tours, *count, name);
+                find_excursion(*tours, *count);
                 break;
             }
             case 0:
