@@ -8,7 +8,9 @@
 #include <limits.h>
 #include <string.h>
 
+void press_enter_to_continue();
 int check();
+
 typedef struct BytesOfInt {
     unsigned char byte1 : 8;
     unsigned char byte2 : 8;

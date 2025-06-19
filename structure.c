@@ -2,7 +2,7 @@
 #include "byte_fields.h"
 
 double check_double() {
-    char input[100];
+    char input[20];
     char *endptr;
     double number;
 
@@ -37,13 +37,13 @@ double check_double() {
         number = strtod(input, &endptr);
 
         if (endptr == input) {
-            printf("Ошибка: введены нечисловые символы.\n");
+            puts("Ошибка: введены нечисловые символы.");
         } else if (*endptr != '\0') {
-            printf("Ошибка: введены лишние символы.\n");
+            puts("Ошибка: введены лишние символы.");
         } else if (errno == ERANGE) {
-            printf("Ошибка: число выходит за допустимый диапазон.\n");
+            puts("Ошибка: число выходит за допустимый диапазон.");
         } else if (number <= 0) {
-            printf("Ошибка: число должно быть положительным.\n");
+            puts("Ошибка: число должно быть положительным.");
         } else {
             break;
         }
@@ -56,7 +56,7 @@ void start_excursion_check(char *date) {
     while (1) {
         printf("Введите дату начала экскурсии (формат: дд.мм.гггг): ");
         if (fgets(date, 11, stdin) == NULL) {
-            printf("Ошибка ввода.\n");
+            puts("Ошибка ввода.");
             continue;
         }
 
@@ -66,12 +66,12 @@ void start_excursion_check(char *date) {
         }
 
         if (len != 10) {
-            printf("Ошибка: неверный формат даты.\n");
+            puts("Ошибка: неверный формат даты.");
             continue;
         }
 
         if (date[2] != '.' || date[5] != '.') {
-            printf("Ошибка: неверный формат даты.\n");
+            puts("Ошибка: неверный формат даты.");
             continue;
         }
 
@@ -80,7 +80,7 @@ void start_excursion_check(char *date) {
         int year = (date[6] - '0') * 1000 + (date[7] - '0') * 100 + (date[8] - '0') * 10 + (date[9] - '0');
 
         if (day < 1 || day > 31 || month < 1 || month > 12 || year < 2025 || year > 2100) {
-            printf("Ошибка: неверная дата.\n");
+            puts("Ошибка: неверная дата.");
             continue;
         }
 
@@ -93,7 +93,7 @@ void input_excursion(Excursion *tour) {
 
     printf("Введите название экскурсии: ");
     if (fgets(buffer, sizeof(buffer), stdin) == NULL) {
-        printf("Ошибка ввода.\n");
+        puts("Ошибка ввода.");
         return;
     }
 
@@ -104,7 +104,7 @@ void input_excursion(Excursion *tour) {
 
     tour->name = (char *)malloc((len + 1) * sizeof(char));
     if (tour->name == NULL) {
-        printf("Ошибка выделения памяти.\n");
+        puts("Ошибка выделения памяти.");
         return;
     }
     strcpy(tour->name, buffer);
@@ -196,6 +196,8 @@ void structure_task(Excursion **tours, int *count) {
     int choice;
 
     do {
+        system("clear");
+
         puts("1 - добавить экскурсию.");
         puts("2 - вывести все туры.");
         puts("3 - удалить тур по названию");
@@ -206,6 +208,7 @@ void structure_task(Excursion **tours, int *count) {
 
         switch (choice) {
             case 1:
+                system("clear");
                 *tours = (Excursion *)realloc(*tours, (*count + 1) * sizeof(Excursion));
                 if (*tours == NULL) {
                     printf("Ошибка выделения памяти.\n");
@@ -213,8 +216,10 @@ void structure_task(Excursion **tours, int *count) {
                 }
                 input_excursion(&(*tours)[*count]);
                 (*count)++;
+                press_enter_to_continue();
                 break;
             case 2:
+                system("clear");
                 if (*count == 0) {
                     printf("Нет доступных туров.\n");
                 } else {
@@ -224,24 +229,32 @@ void structure_task(Excursion **tours, int *count) {
                         printf("\n");
                     }
                 }
+                press_enter_to_continue();
                 break;
             case 3: {
+                system("clear");
                 char name[100];
                 printf("Введите название тура для удаления: ");
                 scanf("%s", name);
                 delete_excursion(tours, count, name);
+                press_enter_to_continue();
                 break;
             }
             case 4: {
+                system("clear");
                 char name[100];
                 find_excursion(*tours, *count);
+                press_enter_to_continue();
                 break;
             }
             case 0:
+                system("clear");
                 printf("Выход.\n");
                 break;
             default:
+                system("clear");
                 printf("Неверный выбор. Попробуйте снова.\n");
+                press_enter_to_continue();
                 break;
         }
     } while (choice != 0);

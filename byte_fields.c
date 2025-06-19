@@ -1,32 +1,25 @@
 #include "byte_fields.h"
 
+void press_enter_to_continue() {
+    printf("\nНажмите Enter для продолжения...");
+    getchar(); getchar();
+}
+
 int check(){
-    char * input = (char*)calloc(11, sizeof(char));
-    char *endptr;
-    long number;
+  	char s[20];
+  	int i = 0;
 
-    while (1) {
-        if (fgets(input, 11, stdin) == NULL) {
-            printf("Ошибка ввода.\n");
-            return 1;
-        }
+  	while (1) {
+        s[i] = getchar();
+        if(s[i] == 10) break;
+        if(s[i] >= '0' && s[i] <= '9'){	
+            i++;
+		}
+  	}
 
-        errno = 0;
-        number = strtol(input, &endptr, 10);
+  	s[i] = '\0';
 
-        if (endptr == input) {
-            puts(" ");
-        } else if (*endptr != '\n' && *endptr != '\0') {
-            puts("Ошибка: введены недопустимые символы: ");
-        } else if (errno == ERANGE || number < INT_MIN || number > INT_MAX) {
-            puts("Ошибка: число выходит за допустимый диапазон: ");
-        } else {
-            break;
-        }
-    }
-
-    free(input);
-    return (int)number;
+  	return atoi(s);
 }
 
 void byte_fields(){
